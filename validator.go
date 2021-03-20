@@ -50,8 +50,10 @@ type ValidationItem struct {
 }
 
 // 参数验证
-func Validation(params func(string) string, rules []ValidationItem) (string, error) {
+func Validation(params func(string) string, rules []ValidationItem) (map[string]string, string, error) {
 	var err error
+	data := map[string]string{}
+
 	for _, v := range rules {
 		val := params(v.Key)
 		for vIk, vI := range v.Rules {
@@ -82,12 +84,13 @@ func Validation(params func(string) string, rules []ValidationItem) (string, err
 				err = ValidationDistinct(&v, vIk, val)
 			}
 			if err != nil {
-				return v.Key, err
+				return nil, v.Key, err
 			}
 		}
+		data[v.Key] = val
 	}
 
-	return "", nil
+	return data, "", nil
 }
 
 // 是否为空或未提交

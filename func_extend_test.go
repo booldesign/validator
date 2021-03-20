@@ -164,3 +164,25 @@ func TestValidationRealnameData(t *testing.T) {
 		}
 	}
 }
+
+func TestValidationPasswordData(t *testing.T) {
+	tests := []struct {
+		in     string
+		expect bool
+	}{
+		{"1", false},
+		{"weijianwen2", true},
+		{"wei.jianwen1", true},
+		{"卫建文", true},
+		{"卫建文_", false},
+		{"_卫建文", false},
+		{"wei jianwen", false},
+	}
+
+	for _, test := range tests {
+		vFunc := ValidationRealnameData()
+		if ok := vFunc.Func(test.in); ok != test.expect {
+			t.Errorf("ValidationRealnameData() failed. "+vFunc.Msg, test.in)
+		}
+	}
+}

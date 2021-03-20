@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-
 	"github.com/booldesign/validator"
 )
 
@@ -25,6 +24,7 @@ func main() {
 		params["pageNum"] = "1"
 		params["pageSize"] = "10"
 		params["username"] = "gegeg122"
+		params["password"] = "$$$$$$$a"
 		params["idCardCode"] = "110103200301013718"
 		params["email"] = "booldesign@163.com"
 		params["mobile"] = "13501691436"
@@ -35,7 +35,7 @@ func main() {
 		return params[key]
 	}
 
-	err := ValidatorJust(FuncName, []validator.ValidationItem{
+	data, err := Validator(FuncName, []validator.ValidationItem{
 		{
 			Key: "orgId", Name: "组织机构id",
 			Rules: []validator.ValidationRule{
@@ -82,6 +82,12 @@ func main() {
 				{Rule: "func", Data: validator.ValidationUsernameData()},
 			},
 		}, {
+			Key: "password", Name: "密码",
+			Rules: []validator.ValidationRule{
+				{Rule: "required"},
+				{Rule: "func", Data: validator.ValidationPasswordData()},
+			},
+		}, {
 			Key: "idCardCode", Name: "身份证号码",
 			Rules: []validator.ValidationRule{
 				{Rule: "func", Data: validator.ValidationIdCardCodeData()},
@@ -124,4 +130,6 @@ func main() {
 		fmt.Println(err)
 		return
 	}
+
+	fmt.Println(data)
 }

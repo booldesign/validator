@@ -225,6 +225,35 @@ func ValidationObjectId() ValidationFuncRule {
 	}
 }
 
+// 验证密码格式
+func ValidationPasswordData() ValidationFuncRule {
+	return ValidationFuncRule{
+		func(val string) bool {
+			m := 0
+			if len(val) >= 8 && len(val) <= 32 {
+				for _, v := range val {
+					//[0-9A-Za-z!"#$%&'()*+,-./:;<=>?@ [\]^_`{|}~
+					if v >= 48 && v <= 57 {
+						m = m | 1
+					} else if (v >= 65 && v <= 90) || (v >= 97 && v <= 122) {
+						m = m | 2
+					} else if (v >= 33 && v <= 47) || (v >= 58 && v <= 64) || (v >= 91 && v <= 96) || (v >= 123 && v <= 126) {
+						m = m | 4
+					} else {
+						m = 0
+						break
+					}
+				}
+				if m != 0 && m != 1 && m != 2 && m != 4 {
+					return true
+				}
+			}
+			return false
+		},
+		"%s 8~32位字母,数字,特殊符号的组合，且包含2种以上组合",
+	}
+}
+
 // 检查编号是否符合mongoDB格式
 func ValidationObjectIds() ValidationFuncRule {
 	return ValidationFuncRule{
