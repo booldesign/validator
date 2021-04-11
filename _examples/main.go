@@ -32,6 +32,7 @@ func main() {
 		params["userIds"] = "1,2,4,q,5"
 		params["cids"] = "1,2,4,2,4,5"
 		params["birthday"] = "2010-01-01"
+		params["date"] = "2021-04-11"
 		return params[key]
 	}
 
@@ -123,6 +124,11 @@ func main() {
 			Key: "birthday", Name: "生日",
 			Rules: []validator.ValidationRule{
 				{Rule: "func", Data: validator.ValidationBirthdayData()},
+			},
+		}, {
+			Key: "date", Name: "日期",
+			Rules: []validator.ValidationRule{
+				{Rule: "func", Data: validator.ValidationDateData()},
 			},
 		},
 	})

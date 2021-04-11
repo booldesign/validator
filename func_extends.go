@@ -86,6 +86,20 @@ func ValidationBirthdayData() ValidationFuncRule {
 	}
 }
 
+// 检查日期格式
+func ValidationDateData() ValidationFuncRule {
+	return ValidationFuncRule{
+		func(val string) bool {
+			_, err := time.ParseInLocation(DefaultData, val, loc)
+			if err != nil {
+				return false
+			}
+			return true
+		},
+		"%s 格式错误：1000-01-01",
+	}
+}
+
 // 检查身份证号码
 func ValidationIdCardCodeData() ValidationFuncRule {
 	return ValidationFuncRule{
